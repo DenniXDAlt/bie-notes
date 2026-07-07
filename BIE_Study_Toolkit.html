@@ -1,0 +1,1056 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>BIE Study Toolkit — Business Innovation &amp; Enterprise</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
+  :root{
+    --bg:#101317;
+    --panel:#171b21;
+    --panel2:#1d2229;
+    --line:#2a303a;
+    --text:#e9edf2;
+    --muted:#9aa5b3;
+    --accent:#7ee0c3;   /* mint - "idea" spark */
+    --accent2:#f2b134;  /* amber - "insight" */
+    --accent3:#8b7cf6;  /* violet - "design" */
+    --bad:#ef6461;
+    --good:#7ee0c3;
+    --radius:14px;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0; font-family:'Segoe UI', system-ui, -apple-system, Arial, sans-serif;
+    background:
+      radial-gradient(1000px 500px at 10% -10%, rgba(139,124,246,0.12), transparent),
+      radial-gradient(900px 500px at 100% 0%, rgba(126,224,195,0.10), transparent),
+      var(--bg);
+    color:var(--text);
+    min-height:100vh;
+  }
+  h1,h2,h3,h4{font-family:Georgia, 'Times New Roman', serif; letter-spacing:.2px;}
+  header.top{
+    padding:28px 24px 18px; text-align:center;
+    border-bottom:1px solid var(--line);
+    position:sticky; top:0; z-index:50;
+    background:rgba(16,19,23,0.92); backdrop-filter:blur(8px);
+  }
+  header.top h1{margin:0 0 4px; font-size:1.6rem;}
+  header.top .sub{color:var(--muted); font-size:0.9rem;}
+  .stagebar{
+    display:flex; gap:6px; justify-content:center; flex-wrap:wrap;
+    margin-top:14px;
+  }
+  .stagebar span{
+    font-size:0.68rem; color:var(--muted); border:1px solid var(--line);
+    padding:3px 9px; border-radius:99px; background:var(--panel);
+  }
+  nav.tabs{
+    display:flex; gap:8px; flex-wrap:wrap; justify-content:center;
+    padding:14px 16px; max-width:1200px; margin:0 auto;
+  }
+  nav.tabs button{
+    background:var(--panel); color:var(--text); border:1px solid var(--line);
+    padding:9px 14px; border-radius:10px; cursor:pointer; font-size:0.85rem;
+    transition:all .15s;
+  }
+  nav.tabs button:hover{border-color:var(--accent3); color:var(--accent3);}
+  nav.tabs button.active{
+    background:linear-gradient(135deg, var(--accent3), #6a5ce0); color:#fff; border-color:transparent;
+    font-weight:600;
+  }
+  main{max-width:1000px; margin:0 auto; padding:10px 18px 80px;}
+  .panel{
+    background:var(--panel); border:1px solid var(--line); border-radius:var(--radius);
+    padding:22px 24px; margin-bottom:20px;
+  }
+  .panel h2{margin-top:0; color:var(--accent3); font-size:1.35rem; border-bottom:1px solid var(--line); padding-bottom:10px;}
+  .panel h3{color:var(--accent2); font-size:1.05rem; margin-bottom:6px;}
+  .panel h4{color:var(--accent); font-size:0.95rem; margin:14px 0 4px;}
+  .panel p, .panel li{line-height:1.55; font-size:0.93rem; color:#dbe1e8;}
+  .panel ul{margin:4px 0 12px 20px; padding:0;}
+  .quote{
+    border-left:3px solid var(--accent3); padding:8px 14px; margin:10px 0;
+    background:var(--panel2); font-style:italic; color:#c9cfda; font-size:0.9rem; border-radius:0 8px 8px 0;
+  }
+  table.notes-table{width:100%; border-collapse:collapse; margin:10px 0 16px; font-size:0.85rem;}
+  table.notes-table th{
+    background:var(--panel2); color:var(--accent); text-align:left; padding:8px 10px;
+    border-bottom:2px solid var(--line);
+  }
+  table.notes-table td{padding:8px 10px; border-bottom:1px solid var(--line); color:#dbe1e8; vertical-align:top;}
+  table.notes-table tr:hover td{background:rgba(126,224,195,0.04);}
+  .grid2x2{
+    display:grid; grid-template-columns:1fr 1fr; gap:10px; margin:14px 0;
+  }
+  .grid2x2 div{
+    background:var(--panel2); border:1px solid var(--line); border-radius:10px; padding:12px 14px; font-size:0.85rem;
+  }
+  .grid2x2 .q1{border-top:3px solid var(--accent);}
+  .grid2x2 .q2{border-top:3px solid var(--accent2);}
+  .grid2x2 .q3{border-top:3px solid var(--accent3);}
+  .grid2x2 .q4{border-top:3px solid var(--bad);}
+  .pill-row{display:flex; gap:8px; flex-wrap:wrap; margin:10px 0;}
+  .pill{
+    background:var(--panel2); border:1px solid var(--line); border-radius:99px;
+    padding:5px 12px; font-size:0.78rem; color:var(--accent);
+  }
+  .section-toggle{
+    cursor:pointer; user-select:none; display:flex; align-items:center; gap:8px;
+  }
+  .section-toggle::before{content:"▸"; color:var(--accent3); transition:transform .15s;}
+  .section-toggle.open::before{transform:rotate(90deg);}
+  .collapsible{display:none; margin-left:4px;}
+  .collapsible.open{display:block;}
+
+  /* Quiz */
+  .quiz-controls{display:flex; gap:10px; align-items:center; margin-bottom:14px; flex-wrap:wrap;}
+  .quiz-controls button{
+    background:var(--accent3); color:#fff; border:none; padding:8px 16px; border-radius:8px;
+    cursor:pointer; font-size:0.85rem; font-weight:600;
+  }
+  .quiz-controls button.secondary{background:var(--panel2); color:var(--text); border:1px solid var(--line);}
+  .score-badge{
+    margin-left:auto; font-size:0.85rem; color:var(--accent2); font-weight:600;
+  }
+  .qcard{
+    background:var(--panel2); border:1px solid var(--line); border-radius:12px;
+    padding:16px 18px; margin-bottom:14px;
+  }
+  .qcard .qtext{font-size:0.92rem; margin-bottom:10px; color:var(--text); font-weight:600;}
+  .qcard .qtopic{font-size:0.7rem; color:var(--muted); margin-bottom:6px;}
+  .opt{
+    display:block; width:100%; text-align:left; background:var(--panel); color:var(--text);
+    border:1px solid var(--line); padding:9px 12px; border-radius:8px; margin-bottom:7px;
+    cursor:pointer; font-size:0.85rem; transition:all .12s;
+  }
+  .opt:hover{border-color:var(--accent3);}
+  .opt.correct{background:rgba(126,224,195,0.15); border-color:var(--good); color:var(--good);}
+  .opt.wrong{background:rgba(239,100,97,0.15); border-color:var(--bad); color:var(--bad);}
+  .opt.disabled{cursor:default; opacity:0.85;}
+  .explain{
+    margin-top:8px; padding:10px 12px; background:var(--panel); border-radius:8px;
+    font-size:0.82rem; color:var(--muted); display:none; border-left:3px solid var(--accent2);
+  }
+  .explain.show{display:block;}
+  .footer-note{text-align:center; color:var(--muted); font-size:0.75rem; margin-top:30px;}
+  .badge-count{
+    display:inline-block; background:var(--panel2); color:var(--accent); font-size:0.7rem;
+    padding:2px 8px; border-radius:99px; margin-left:6px; border:1px solid var(--line);
+  }
+  #resultsBox{
+    text-align:center; padding:24px; display:none;
+  }
+  #resultsBox.show{display:block;}
+  #resultsBox .bigscore{font-size:2.4rem; color:var(--accent); font-family:Georgia, serif;}
+  @media(max-width:600px){
+    .grid2x2{grid-template-columns:1fr;}
+  }
+</style>
+</head>
+<body>
+
+<header class="top">
+  <h1>Business Innovation &amp; Enterprise</h1>
+  <div class="sub">Study Toolkit — Notes &amp; Practice Questions for every topic</div>
+  <div class="stagebar">
+    <span>Digital Transformation</span><span>Empathize</span><span>Define</span><span>Ideate</span><span>Prototype</span><span>Test</span><span>Software Dev Process</span>
+  </div>
+</header>
+
+<nav class="tabs" id="tabNav"></nav>
+
+<main id="mainArea"></main>
+
+<div class="footer-note">Built from your BIE course materials (LU Intro, Weeks 1, 2, 4, 6, 7, 8, 11, 13) · Use the Full Practice Test tab to mix questions from every topic.</div>
+
+<script>
+/* ============================================================
+   DATA: one object per topic — notes (HTML) + quiz (array)
+   ============================================================ */
+const TOPICS = [
+
+{
+  id:"biz",
+  short:"Business & Digital Transformation",
+  week:"Week 1",
+  notes:`
+    <h2>1. Digital Transformation — An Introduction <span class="badge-count">Week 1</span></h2>
+
+    <h3>What is a Business?</h3>
+    <div class="quote">A Business is "the organised effort of individuals to produce and sell, for a profit, the goods and services that satisfy society's needs" — W. Pride, R. Hughes, J. Kapoor</div>
+
+    <h4>Characteristics of a Business</h4>
+    <ul>
+      <li><b>Profit-Seeking</b> — seeks to make a profit</li>
+      <li><b>Organised Effort of Individuals</b> — people/resources working together toward common goals</li>
+      <li><b>Satisfy a Need for Society</b> — provides a good/service that satisfies consumer needs (e.g. a grocery store satisfies the need to buy food)</li>
+    </ul>
+
+    <h4>Business Sectors / Industries</h4>
+    <div class="pill-row">
+      <span class="pill">Financial Services</span><span class="pill">Retail Services</span><span class="pill">Healthcare Services</span>
+      <span class="pill">Transportation Services</span><span class="pill">Entertainment Services</span><span class="pill">Industrial Manufacturer</span>
+    </div>
+    <p>Financial = banks, brokerage firms, insurance. Retail = retailers/wholesalers/distributors who buy then resell at profit. Healthcare = GP clinics, polyclinics, hospitals, long-term care. Industrial Manufacturer = produces tangible goods (cars, medical equipment) from raw materials/parts.</p>
+
+    <h4>Business–Customer Relationships</h4>
+    <table class="notes-table">
+      <tr><th>Type</th><th>Description</th><th>Example</th></tr>
+      <tr><td>B2C</td><td>Selling directly to consumers (end-users)</td><td>Direct consumers</td></tr>
+      <tr><td>B2B</td><td>Selling to companies, not individuals</td><td>Wholesalers &amp; retailers</td></tr>
+      <tr><td>B2G</td><td>Selling to government agencies</td><td>Federal / state / local govt contracts</td></tr>
+      <tr><td>B2B2C</td><td>Sells to a business who then sells to consumers/other businesses</td><td>Distributors</td></tr>
+    </table>
+
+    <h4>Business Ownership / Forms</h4>
+    <ul>
+      <li><b>Sole Proprietorship</b> — owned by one person; owner has unlimited liability</li>
+      <li><b>Partnership</b> — owned by two or more people; usually unlimited liability</li>
+      <li><b>Corporation</b> — govt-owned or privately owned (privately held or publicly traded); directed by a board, managed by hired staff; owners have <b>limited liability</b></li>
+    </ul>
+
+    <h4>Business Activities</h4>
+    <ul>
+      <li><b>Production/Manufacturing</b> — creating the good/service</li>
+      <li><b>Marketing &amp; Sales</b> — selling to end consumers (advertising, pricing)</li>
+      <li><b>Finance &amp; Accounting</b> — managing company finances (P&amp;L reporting, investment)</li>
+      <li><b>Research &amp; Development</b> — developing new goods/services</li>
+    </ul>
+
+    <h3>Business Model</h3>
+    <div class="quote">A Business Model is "the architecture with which an organization creates value for customers, how it delivers that value, and how it captures that value." — Alex Osterwalder</div>
+    <p>In short: how the business creates &amp; delivers value, and how it makes money.</p>
+
+    <h4>Traditional Business Models</h4>
+    <table class="notes-table">
+      <tr><th>Model</th><th>Description</th><th>Example</th></tr>
+      <tr><td>Franchise</td><td>Franchisee uses parent's brand/model, pays royalties</td><td>McDonald's, Subway, Ya Kun</td></tr>
+      <tr><td>Direct Sales / MLM</td><td>Leverages personal networks to recommend products; door-to-door</td><td>Tupperware, Mary Kay</td></tr>
+      <tr><td>Subscription</td><td>Automatic payment plans, cancellation fee possible</td><td>SP Group, Singtel/M1/Starhub</td></tr>
+      <tr><td>Advertising</td><td>Buys space on traditional media, purchased "spots" generate revenue</td><td>MediaCorp</td></tr>
+      <tr><td>Razor-Razorblade</td><td>Low-margin base item; high-markup consumables</td><td>Gillette, HP printers, Nestlé coffee makers</td></tr>
+      <tr><td>Nickel and Dime</td><td>Cheap core item, charges for every extra</td><td>Budget airlines</td></tr>
+    </table>
+
+    <h4>Digital Business Models</h4>
+    <table class="notes-table">
+      <tr><th>Model</th><th>Description</th><th>Example</th></tr>
+      <tr><td>Bricks-and-Clicks</td><td>In-store shopping extended with online ordering/pickup</td><td>NTUC FairPrice Online, H&amp;M, Uniqlo</td></tr>
+      <tr><td>Advertising</td><td>Content mixed with ads (banners, blog posts)</td><td>Online blogs, Google, Yahoo</td></tr>
+      <tr><td>Crowdsourcing + Advertising</td><td>Content created by users, who access others' content</td><td>Facebook, YouTube</td></tr>
+      <tr><td>Affiliate</td><td>Resells others' items, paid for driving customers</td><td>Trivago, Skyscanner, Amazon</td></tr>
+      <tr><td>Brokerage</td><td>Brings buyers &amp; sellers together, charges a fee</td><td>Grab, Airbnb</td></tr>
+      <tr><td>Freemium</td><td>Free basic service, charges for premium add-ons</td><td>Dropbox</td></tr>
+      <tr><td>Subscription</td><td>Monthly fee to stream content</td><td>Netflix, Spotify</td></tr>
+      <tr><td>Reverse Razor-Razorblade</td><td>Main product sold high, companion product sold cheap (opposite of razor-razorblade)</td><td>Apple iPod/iPhone, Amazon Kindle</td></tr>
+    </table>
+
+    <h3>Digital Transformation</h3>
+    <div class="quote">Digital Transformation is the fundamental rewiring of how an organization operates. The goal should be to build a competitive advantage by continuously deploying tech at scale to improve customer experience and lower costs. — McKinsey &amp; Company</div>
+    <p><b>Case studies discussed:</b> DBS and Aviva — how a deep understanding of the customer informed their digital transformation priorities.</p>
+  `,
+  quiz:[
+    {q:"Who defined a Business as 'the organised effort of individuals to produce and sell, for a profit, the goods and services that satisfy society's needs'?", opts:["Alex Osterwalder","W. Pride, R. Hughes, J. Kapoor","Tim Brown","McKinsey & Company"], a:1, ex:"That definition comes from Pride, Hughes & Kapoor — the McKinsey quote is about digital transformation, and Osterwalder's is about business models."},
+    {q:"Which of these is NOT one of the three core characteristics of a business?", opts:["Profit-seeking","Organised effort of individuals","Satisfy a need for society","Guaranteed market monopoly"], a:3, ex:"The three characteristics are profit-seeking, organised effort of individuals, and satisfying a societal need."},
+    {q:"A GP clinic, polyclinic or hospital belongs to which business sector?", opts:["Retail Services","Healthcare Services","Financial Services","Industrial Manufacturer"], a:1, ex:"Healthcare Services covers GP clinics, polyclinics, hospitals, and long-term care services."},
+    {q:"Grab and Airbnb selling directly to individual end-users is an example of which relationship type?", opts:["B2B","B2G","B2C","B2B2C"], a:2, ex:"Selling products/services directly to consumers who are the end-users is B2C."},
+    {q:"A distributor who buys from a manufacturer and resells to retailers or consumers best represents which relationship?", opts:["B2B2C", "B2G", "B2C", "B2B"], a:0, ex:"B2B2C describes selling to a business that in turn sells to end consumers or other businesses — e.g. distributors."},
+    {q:"In which business ownership form do owners typically have LIMITED liability?", opts:["Sole Proprietorship","Partnership","Corporation","Both sole proprietorship and partnership"], a:2, ex:"Corporations give owners limited liability; sole proprietorships and partnerships usually carry unlimited liability."},
+    {q:"P&L (Profit & Loss) reporting and investment management fall under which business activity?", opts:["Production/Manufacturing","Marketing & Sales","Finance & Accounting","Research & Development"], a:2, ex:"Finance & Accounting focuses on managing the company's finances, including P&L reporting."},
+    {q:"Who defined a Business Model as 'the architecture with which an organization creates value for customers, how it delivers that value, and how it captures that value'?", opts:["Tim Brown","Alex Osterwalder","W. Pride","McKinsey & Company"], a:1, ex:"That is Alex Osterwalder's definition of a business model."},
+    {q:"McDonald's, Subway, and Ya Kun are classic examples of which traditional business model?", opts:["Subscription","Franchise","Nickel and dime","Advertising"], a:1, ex:"Franchise: the franchisee uses the parent business's brand/model while paying royalties."},
+    {q:"Gillette selling cheap razor handles but pricing replacement blades very high is an example of which model?", opts:["Reverse Razor-Razorblade","Razor-Razorblade","Freemium","Bricks-and-clicks"], a:1, ex:"Razor-Razorblade: low-margin core item, high-markup consumables."},
+    {q:"Apple selling the iPhone at a high price while accessories/apps are comparatively cheap is described as which model?", opts:["Razor-Razorblade","Reverse Razor-Razorblade","Nickel and dime","Brokerage"], a:1, ex:"Reverse Razor-Razorblade flips the pattern — the main product is priced high, the companion product cheap."},
+    {q:"Dropbox offering free basic storage while charging for extra space/features is which digital business model?", opts:["Freemium","Affiliate","Crowdsourcing + Advertising","Bricks-and-clicks"], a:0, ex:"Freemium: basic service free, premium add-ons paid."},
+    {q:"According to McKinsey, what is the ultimate goal of Digital Transformation?", opts:["To replace all employees with automation","To build competitive advantage by deploying tech at scale to improve customer experience and lower costs","To digitise paper documents only","To increase advertising spend"], a:1, ex:"McKinsey defines digital transformation as the fundamental rewiring of how an organisation operates, aiming to build competitive advantage via tech deployed at scale."},
+  ]
+},
+
+{
+  id:"empathy",
+  short:"Design Thinking Foundations & Empathy",
+  week:"Week 2",
+  notes:`
+    <h2>2. Design Thinking — Process &amp; Mindset, Empathy <span class="badge-count">Week 2</span></h2>
+
+    <h3>Design Thinking &amp; Innovation</h3>
+    <div class="quote">Design Thinking is a human-centered approach to innovation that draws from the designer's toolkit to integrate the needs of people, the possibilities of technology, and the requirements for business success. — Tim Brown, CEO of IDEO</div>
+    <p>It sits at the intersection of <b>Customer Desirability</b>, <b>Business Viability</b> and <b>Technical Feasibility</b> (Source: HPI School of Design Thinking).</p>
+
+    <h4>How is Design Thinking different from our usual ways of thinking?</h4>
+    <p>We naturally develop patterns of thinking modelled on repetitive activities and familiar knowledge, and tend to quickly apply the same actions in similar situations. These habits can prevent us from seeing, understanding, and solving problems in new ways.</p>
+
+    <h4>What is Design Thinking?</h4>
+    <ul><li>It is a <b>mindset</b> — an intentional process to get to new, relevant solutions that create positive impact.</li></ul>
+    <div class="quote">Creativity is a mindset, a way of thinking, and a proactive approach to finding new solutions. — Tom Kelley &amp; David Kelley</div>
+
+    <h4>Key Points in Design Thinking</h4>
+    <ul>
+      <li><b>Human-centric</b> — willing to put empathy into action</li>
+      <li>Seeing things from different perspectives</li>
+      <li>Believe in the art and power of collaborative creativity</li>
+      <li>Having an experimental mindset</li>
+      <li>Be optimistic</li>
+    </ul>
+
+    <h4>Divergent vs. Convergent Thinking</h4>
+    <div class="grid2x2">
+      <div class="q1"><b>Divergent thinking</b><br>Explores the possible problems / possible solutions — widen the options.</div>
+      <div class="q3"><b>Convergent thinking</b><br>Narrows down to the "Wicked Problem" (the problem most worth solving) or the "most fitting" solution.</div>
+    </div>
+
+    <h3>The Design Thinking Process</h3>
+    <p>Multiple frameworks exist (Stanford D.School, IDEO.org Human Centered Design, IBM Design Thinking, SAP Design Thinking) but the core 5 stages used in this course are:</p>
+    <div class="pill-row">
+      <span class="pill">Empathize</span><span class="pill">Define</span><span class="pill">Ideate</span><span class="pill">Prototype</span><span class="pill">Test</span>
+    </div>
+    <p>It is <b>iterative</b>, not strictly linear — teams loop back between stages as new insights emerge.</p>
+
+    <h3>Empathize</h3>
+    <p>Empathy is the foundation of human-centered design. Three ways to empathize:</p>
+    <ul>
+      <li><b>Engage</b> — interact with and interview users through scheduled and short intercept encounters</li>
+      <li><b>Observe</b> — view users and their behaviour in the context of their lives</li>
+      <li><b>Immerse</b> — experience what your user experiences (e.g. wearing an "aging suit" to feel like being 30 years older; ethnographic research = following/observing someone in their natural environment)</li>
+    </ul>
+
+    <h4>Why is Observation Important?</h4>
+    <ul>
+      <li>Interviewees might not know what they want</li>
+      <li>Interviewees might not be able to articulate what they want</li>
+      <li>Reveals useful insights on how people use/misuse things, or react differently in natural settings</li>
+    </ul>
+
+    <h3>Users &amp; Stakeholders</h3>
+    <div class="grid2x2">
+      <div class="q1"><b>Users</b><br>Interact directly with the solution. Focus: functionality, accessibility, user experience.</div>
+      <div class="q2"><b>Stakeholders</b><br>Have an interest in the solution. May not use it, but have influence over its success.</div>
+    </div>
+
+    <h4>Stakeholder Mapping — Influence-Interest Grid (2x2)</h4>
+    <table class="notes-table">
+      <tr><th>Quadrant</th><th>Meaning</th></tr>
+      <tr><td>High Influence + High Interest</td><td>Key Players — directly involved</td></tr>
+      <tr><td>High Influence + Low Interest</td><td>Keep Satisfied — can block/support</td></tr>
+      <tr><td>Low Influence + High Interest</td><td>Keep Informed — affected but not decision-makers</td></tr>
+      <tr><td>Low Influence + Low Interest</td><td>Monitor — little involvement</td></tr>
+    </table>
+  `,
+  quiz:[
+    {q:"Who is credited with the definition: 'Design Thinking is a human-centered approach to innovation...'?", opts:["Tom Kelley","David Kelley","Tim Brown, CEO of IDEO","Alex Osterwalder"], a:2, ex:"This is Tim Brown's (CEO of IDEO) definition of Design Thinking."},
+    {q:"Design Thinking sits at the intersection of which three lenses?", opts:["Cost, Speed, Quality","Customer Desirability, Business Viability, Technical Feasibility","Planning, Design, Testing","Empathy, Logic, Data"], a:1, ex:"The HPI School of Design Thinking model places Design Thinking at the intersection of desirability, viability, and feasibility."},
+    {q:"What best describes habitual/repetitive thinking patterns according to the lesson?", opts:["They always improve creativity","They can prevent us from seeing, understanding, and solving problems in new ways","They are required for Design Thinking","They have no effect on problem solving"], a:1, ex:"Habitual patterns of thinking, while efficient, can block us from developing new ways of seeing and solving problems."},
+    {q:"Divergent thinking is best described as:", opts:["Narrowing down to the single best solution","Exploring a wide range of possible problems or solutions", "Choosing the 'wicked problem'", "Testing a prototype"], a:1, ex:"Divergent thinking widens the field of possible problems/solutions; convergent thinking narrows it down."},
+    {q:"The 'Wicked Problem' refers to:", opts:["A problem that cannot be solved","The problem most worth solving, arrived at via convergent thinking","A randomly chosen problem","Any problem raised by a stakeholder"], a:1, ex:"After divergent thinking generates possible problems, convergent thinking narrows down to the wicked problem — the one most worth solving."},
+    {q:"What are the 5 stages of the Design Thinking process used in this course?", opts:["Plan, Design, Build, Test, Deploy","Empathize, Define, Ideate, Prototype, Test","Analyse, Design, Implement, Test, Maintain","Engage, Observe, Immerse, Define, Test"], a:1, ex:"The five stages are Empathize, Define, Ideate, Prototype, and Test — applied iteratively."},
+    {q:"Which of the following is NOT one of the three ways to Empathize?", opts:["Engage","Observe","Immerse","Evaluate"], a:3, ex:"The three Empathize methods are Engage, Observe, and Immerse. Evaluate is part of Solution Selection in Ideate."},
+    {q:"Wearing the Ford Third Age Suit to feel what it's like to be 30 years older is an example of which empathy method?", opts:["Engage","Observe","Immerse","Define"], a:2, ex:"This is an Immerse activity — experiencing what the user experiences physically."},
+    {q:"Why is observation important during empathy work?", opts:["Interviewees might not know or be able to articulate what they want","It replaces the need for interviews entirely","It is faster than interviewing","It only matters for children"], a:0, ex:"Observation reveals insights interviewees can't verbalise, and shows how people actually use/misuse things in natural settings."},
+    {q:"Which best distinguishes a 'User' from a 'Stakeholder'?", opts:["Users have no influence at all","Users interact directly with the solution; stakeholders have an interest/influence but may not use it directly","Stakeholders always use the product","There is no difference"], a:1, ex:"Users interact directly with the solution (functionality/UX); stakeholders have an interest in and influence over its success, even without using it."},
+    {q:"On the Influence-Interest grid, a stakeholder with High Influence but Low Interest should be:", opts:["Monitored only","Kept Informed","Kept Satisfied","Ignored"], a:2, ex:"High Influence + Low Interest = Keep Satisfied — they can block or support even without deep personal interest."},
+    {q:"A stakeholder with Low Influence and Low Interest falls into which quadrant?", opts:["Key Players","Keep Satisfied","Keep Informed","Monitor"], a:3, ex:"Low Influence + Low Interest = Monitor — little involvement needed."},
+    {q:"'Key Players, directly involved' describes which quadrant of the influence-interest grid?", opts:["High Influence + High Interest","High Influence + Low Interest","Low Influence + High Interest","Low Influence + Low Interest"], a:0, ex:"High Influence + High Interest stakeholders are Key Players who are directly involved."},
+  ]
+},
+
+{
+  id:"journey",
+  short:"Empathy Map, Persona & Journey Map",
+  week:"Week 4",
+  notes:`
+    <h2>3. Empathy Map, Persona &amp; Customer Journey Map <span class="badge-count">Week 4</span></h2>
+
+    <h3>Empathy Map</h3>
+    <p>Used whenever you need to immerse yourself in a user's environment. <b>Think &amp; Feel</b> are not observed/told directly — they must be inferred from clues. <b>Pain</b> and <b>Gain</b> are identified after synthesising all findings.</p>
+    <div class="grid2x2">
+      <div class="q1"><b>Think &amp; Feel</b><br>What's important to them? How do they measure success? Their emotions in different circumstances. (Inferred, not stated directly.)</div>
+      <div class="q2"><b>Hear</b><br>What are they hearing? Which sounds are obstacles/pleasant? From whom/what interactions?</div>
+      <div class="q3"><b>See</b><br>What are they seeing? Which sights are obstacles or conflict with their needs? What's pleasant?</div>
+      <div class="q4"><b>Say &amp; Do</b><br>What activities do they perform? What do they say? Any direct quotes?</div>
+    </div>
+    <p><b>Pain</b> = pain points, frustrations, obstacles, fears, risks. <b>Gain</b> = goals, what they're trying to achieve, needs, desires.</p>
+
+    <h3>Persona</h3>
+    <ul>
+      <li>A <b>fictional character</b> synthesised from observations of many real people; represents your targeted group of users</li>
+      <li><b>Not an average</b> of everyone — represents people who share similar attributes in your focus context</li>
+    </ul>
+    <h4>Purpose of a Persona</h4>
+    <ul>
+      <li>Creates reliable, realistic representations of targeted users</li>
+      <li>Helps create solutions that target true needs/desires so users can achieve goals effectively</li>
+      <li>Serves as a common reference/basis for design discussions</li>
+    </ul>
+    <h4>Building a Persona</h4>
+    <p>Should be based on research. Think of it like describing a close friend/family member: name, age, gender, residence, nationality, income, beliefs, values, motivations, job, marital status, children, hobbies, strengths, weaknesses, perception of health/well-being, experience with technology, etc.</p>
+
+    <h3>Customer Journey Map</h3>
+    <p>A visual representation of a walkthrough of a user interacting with a product/service/experience, including steps, emotions, and experiences.</p>
+    <h4>What it does</h4>
+    <ul>
+      <li>Visualises the experience</li>
+      <li>Builds empathy towards the user</li>
+      <li>Provides a common big-picture timeline of a user's experiences</li>
+      <li>Shows emotional engagement</li>
+      <li>Sparks opportunities for improvement</li>
+    </ul>
+
+    <h4>Components of a Journey Map</h4>
+    <table class="notes-table">
+      <tr><th>Component</th><th>Elements</th></tr>
+      <tr><td><b>User</b></td><td>Persona (who is the user); Needs (what they desire/expect at each point)</td></tr>
+      <tr><td><b>Experience</b></td><td>Stages (phases of interaction); Thinking &amp; Feelings; Emotion Curve (visual marker of emotion level over time)</td></tr>
+      <tr><td><b>Opportunity</b></td><td>Special Insights (what stood out/was revealed); Improvements (what could change to better meet needs)</td></tr>
+    </table>
+
+    <h4>How to Build a Journey Map</h4>
+    <ol>
+      <li>Collect data from users on experiences</li>
+      <li>Define the user's persona and needs</li>
+      <li>Determine the stages of the user's journey</li>
+      <li>State the user's actions, thinking, and emotions</li>
+      <li>Plot the user's emotional response on the emotion curve</li>
+      <li>Identify insights that stand out (positives or pain points)</li>
+      <li>Write down what can be improved</li>
+    </ol>
+
+    <h4>Assignment Task</h4>
+    <p>Create <b>two personas</b> per team (persona template). Then create a <b>Journey Map</b> — checking it reveals: what happened at each touchpoint, what the user liked/disliked, what was significant, and what changes would make a real difference.</p>
+    <p><i>Note: Empathy Map/Persona may evolve over time during research — they are tools to help you empathise, not the end product.</i></p>
+  `,
+  quiz:[
+    {q:"In an Empathy Map, which quadrant must be INFERRED rather than observed or told directly?", opts:["Hear","See","Think and Feel","Say and Do"], a:2, ex:"Think and Feel cannot be observed or told directly — it must be inferred from clues like Say/Do, Hear, and See."},
+    {q:"'What are the pain points, frustrations, and fears?' belongs to which part of the empathy map?", opts:["Gain","Pain","Hear","See"], a:1, ex:"Pain covers pain points, frustrations, obstacles, fears, and risks — identified after synthesis of findings."},
+    {q:"A Persona is best described as:", opts:["An average profile combining every user's data","A fictional character synthesised from real observations, representing a targeted group of users","A real named customer","A stakeholder with high influence"], a:1, ex:"A persona is fictional but grounded in research, representing a group with similar attributes — not a mathematical average."},
+    {q:"What is the main purpose of creating a Persona?", opts:["To replace user interviews entirely","To serve as a reliable, realistic reference for the team when designing solutions","To satisfy a legal requirement","To calculate profit margins"], a:1, ex:"Personas give the team a common, realistic reference point to focus design discussions on real user needs."},
+    {q:"A Customer Journey Map is best defined as:", opts:["A financial forecast for the business","A visual representation of a user's steps, emotions, and experiences interacting with a product/service","A stakeholder influence-interest grid","A SWOT analysis of a competitor"], a:1, ex:"It visualises the full walkthrough of a user's experience, including emotional highs and lows."},
+    {q:"Which of these is NOT one of the 3 main components of a Journey Map?", opts:["User","Experience","Opportunity","Business Model"], a:3, ex:"The three components are User, Experience, and Opportunity — Business Model is unrelated to the journey map structure."},
+    {q:"The 'Emotion Curve' in a journey map is used to:", opts:["Track revenue over time","Visually mark the user's emotion level at different points of interaction","List all stakeholders","Show the org chart"], a:1, ex:"The Emotion Curve is part of the Experience component, visually plotting how the user feels throughout the journey."},
+    {q:"'Special Insights' and 'Improvements' fall under which journey map component?", opts:["User","Experience","Opportunity","Persona"], a:2, ex:"Opportunity covers Special Insights (what stood out) and Improvements (what could be changed)."},
+    {q:"According to the recommended steps, what should you do FIRST when building a journey map?", opts:["Plot the emotional response","Collect data from users on their experiences","Write down improvements","Identify insights"], a:1, ex:"The first step is collecting data from users on their experiences, before defining persona, stages, etc."},
+    {q:"How many personas were teams asked to create for the Week 4 assignment?", opts:["One","Two","Three","Five"], a:1, ex:"Teams were asked to create Two Personas using the persona template."},
+  ]
+},
+
+{
+  id:"define",
+  short:"Define: POV & Problem Framing",
+  week:"Week 6",
+  notes:`
+    <h2>4. Design Thinking — Define <span class="badge-count">Week 6</span></h2>
+
+    <h3>Recap: Problem Framing Techniques</h3>
+    <table class="notes-table">
+      <tr><th>Technique</th><th>Best used for</th></tr>
+      <tr><td><b>SWOT Analysis</b></td><td>Evaluating problems and ideas</td></tr>
+      <tr><td><b>5 Whys</b></td><td>Identifying root causes of issues</td></tr>
+      <tr><td><b>Gap Analysis</b></td><td>Improving on problems and setting goals</td></tr>
+    </table>
+
+    <h4>SWOT Analysis Overview</h4>
+    <div class="grid2x2">
+      <div class="q1"><b>Strength</b><br>Internal positive factors that give an advantage.</div>
+      <div class="q2"><b>Weakness</b><br>Internal negative factors that place you at a disadvantage.</div>
+      <div class="q3"><b>Opportunity</b><br>External factors that could be beneficial if leveraged.</div>
+      <div class="q4"><b>Threat</b><br>External factors that could cause trouble.</div>
+    </div>
+    <p>Strength &amp; Weakness = <b>internal</b>. Opportunity &amp; Threat = <b>external</b>.</p>
+
+    <h3>Define</h3>
+    <p>The Define stage produces the <b>Point of View (POV)</b> — the actionable problem statement that:</p>
+    <ul>
+      <li>Contains the user insight uncovered during Empathize</li>
+      <li>Captures your unique design vision</li>
+      <li>Inspires you and those working with you</li>
+    </ul>
+
+    <h4>Example POV (from a Persona)</h4>
+    <div class="quote">"A desperate parent living in a remote village needs the means to give her dying (premature) baby a chance to survive because her remote village is very far away from the nearest incubator facility."</div>
+
+    <h4>Improving a POV — add a deeper "because" reason</h4>
+    <p>1. Travis, a 25-year-old university student, needs to find cheap and convenient ways to exercise because he wants to save money → <i>…because he wants to lead a healthy lifestyle while saving money for overseas trips.</i></p>
+    <p>2. Michelle, an 18-year-old Polytechnic student learning about investing, needs credible and free advice on financial management because she wants to know how to invest → <i>…because she wants to achieve financial freedom in her thirties.</i></p>
+    <p><b>POV structure:</b> [User] + needs [need] + because [deeper insight/motivation]</p>
+
+    <h4>Redefine the Problem from the Targeted User's Perspective</h4>
+    <ul>
+      <li>Helps you focus on the GOAL — don't miss it!</li>
+      <li>Consider: for whom exactly? what purpose?</li>
+      <li>Focus on the outcome for the user — the outcome should be <b>measurable</b> (e.g. how the problem has been mitigated or removed)</li>
+    </ul>
+
+    <h4>Assignment Task</h4>
+    <ol>
+      <li><b>Identify the insights</b> — review pain points from your individual Customer Journey Map; rank the pains; consider the impact most desired by the persona, which tasks are most crucial, and why the goal is so important to them.</li>
+      <li><b>Create your POV</b> — each member creates one POV; the team reviews each other's POVs.</li>
+    </ol>
+  `,
+  quiz:[
+    {q:"Which problem framing technique is best used to identify the root cause of an issue?", opts:["SWOT Analysis","5 Whys","Gap Analysis","Solution Selection"], a:1, ex:"5 Whys is specifically used to dig down to root causes by repeatedly asking 'why'."},
+    {q:"Which technique is best used to evaluate problems and ideas?", opts:["5 Whys","SWOT Analysis","Gap Analysis","Creative Matrix"], a:1, ex:"SWOT Analysis evaluates Strengths, Weaknesses, Opportunities, and Threats around a problem or idea."},
+    {q:"Gap Analysis is best used for:", opts:["Root cause identification","Improving on problems and setting goals","Stakeholder mapping","Prototype testing"], a:1, ex:"Gap Analysis compares current state vs desired state to improve problems and set goals."},
+    {q:"In SWOT, which factors are considered INTERNAL?", opts:["Opportunity and Threat","Strength and Weakness","Strength and Threat","Weakness and Opportunity"], a:1, ex:"Strength and Weakness are internal factors; Opportunity and Threat are external."},
+    {q:"'External factors that could be beneficial if leveraged' describes which SWOT element?", opts:["Strength","Weakness","Opportunity","Threat"], a:2, ex:"Opportunity refers to beneficial external factors that can be leveraged."},
+    {q:"A Point of View (POV) in Design Thinking is best described as:", opts:["A marketing slogan","An actionable problem statement containing user insight and design vision","A financial projection","A list of competitors"], a:1, ex:"The POV is the actionable problem statement capturing the user insight from Empathize and your design vision."},
+    {q:"What is the typical structure of a well-formed POV statement?", opts:["[Company] + wants + [profit]","[User] + needs [need] + because [deeper insight/motivation]","[Product] + costs + [price]","[Stakeholder] + influence + [interest]"], a:1, ex:"POVs are structured as User + Need + Because (the deeper insight that explains WHY the need matters)."},
+    {q:"Why is it important to add a deeper 'because' reason when improving a POV (e.g. Travis wanting cheap exercise)?", opts:["It makes the POV shorter","It reveals the true underlying motivation, giving richer direction for solutions","It removes the need for a persona","It is required by law"], a:1, ex:"A deeper 'because' (e.g. wanting to save for overseas trips / lead a healthy lifestyle) reveals the real motivation behind the stated need."},
+    {q:"Why should the outcome in a redefined problem statement be measurable?", opts:["So it looks impressive in a report","So you can verify how the problem has been mitigated or removed", "Because clients require exact numbers always","It isn't necessary to be measurable"], a:1, ex:"A measurable outcome lets the team verify the extent to which the user's problem has actually been solved."},
+    {q:"In the Week 6 assignment, what is the first step before creating your POV?", opts:["Build a prototype","Identify and rank the pains/insights from the Customer Journey Map","Run a Kahoot quiz","Write a business model"], a:1, ex:"Teams first review the persona's pain points from the Journey Map and rank them before creating a POV."},
+  ]
+},
+
+{
+  id:"ideate",
+  short:"Ideate: HMW & Ideation Techniques",
+  week:"Week 7",
+  notes:`
+    <h2>5. Design Thinking — Ideate <span class="badge-count">Week 7</span></h2>
+
+    <h3>What is Ideation?</h3>
+    <p>Ideation is the <b>creative stage</b> in Design Thinking — generating multiple ideas and solutions.</p>
+    <h4>Why Ideation Matters</h4>
+    <ul>
+      <li>Helps move beyond obvious solutions</li>
+      <li>Encourages innovation and creativity</li>
+      <li>Harnesses diverse perspectives from the team</li>
+      <li>Increases chances of discovering unexpected solutions</li>
+    </ul>
+
+    <h4>Ideation Flow</h4>
+    <div class="pill-row">
+      <span class="pill">Point of View (POV)</span><span class="pill">How Might We (HMW)</span><span class="pill">Ideation (Creative Matrix etc.)</span><span class="pill">Solution Selection Matrix</span>
+    </div>
+
+    <h3>Creating HMW Questions</h3>
+    <p>"How Might We" (HMW) questions are short questions that launch brainstorms — they fall out of your POV statement as seeds for ideation. A good HMW is <b>broad enough</b> for a wide range of solutions, but <b>narrow enough</b> to give the team helpful boundaries.</p>
+    <ol>
+      <li>Begin with your POV; reframe it as several "How might we…?" questions</li>
+      <li>Check each HMW is about pain points/issues users want solved</li>
+      <li>Ensure HMWs are broad yet narrow enough for specific activities</li>
+      <li>Use the HMW statements to guide ideation</li>
+    </ol>
+
+    <h3>Ideation Techniques</h3>
+    <h4>Brainstorming</h4>
+    <p>Group creativity technique generating a wide range of ideas quickly. <b>Quantity over quality</b> initially; ideas shared openly without judgement; builds on others' ideas. Used for generating varied solutions.</p>
+
+    <h4>SCAMPER</h4>
+    <p>A structured technique using prompts to enhance/modify existing ideas:</p>
+    <ul>
+      <li><b>S</b>ubstitute — replace parts or processes</li>
+      <li><b>C</b>ombine — merge ideas/services</li>
+      <li><b>A</b>dapt — adjust elements from other contexts</li>
+      <li><b>M</b>odify — alter or change aspects</li>
+      <li><b>P</b>ut to other use — new purposes for the service</li>
+      <li><b>E</b>liminate — remove unnecessary features</li>
+      <li><b>R</b>everse — flip the current approach upside down</li>
+    </ul>
+
+    <h4>Reverse Thinking</h4>
+    <p>Deliberately flips the problem/usual approach to generate innovative solutions — thinking about the opposite of the desired outcome. Helps break habitual thinking / overcome creative blocks.</p>
+
+    <h4>Six Thinking Hats</h4>
+    <p>Looks at a problem from six distinct, colour-coded perspectives (one at a time), for a balanced, comprehensive analysis:</p>
+    <table class="notes-table">
+      <tr><th>Hat</th><th>Perspective</th></tr>
+      <tr><td>White</td><td>Facts/Data — existing information or needed data</td></tr>
+      <tr><td>Red</td><td>Emotions — feelings or intuition about the idea</td></tr>
+      <tr><td>Black</td><td>Cautions — risks or challenges</td></tr>
+      <tr><td>Yellow</td><td>Benefits — positives or strengths</td></tr>
+      <tr><td>Green</td><td>Creativity — innovative improvements</td></tr>
+      <tr><td>Blue</td><td>Management — summarise and organise ideas</td></tr>
+    </table>
+
+    <h4>Creative Matrix</h4>
+    <p>A grid combining HMW statements (columns) against solution "enablers" like Product / Service / Policy / Events-Programmes / Wildcard (rows). Each cell forces focused, constraint-driven thinking. Collaborative — different people/groups can tackle different cells simultaneously. Visual and tangible.</p>
+
+    <h4>Key Takeaways Table</h4>
+    <table class="notes-table">
+      <tr><th>Technique</th><th>Key Strength</th><th>Best Used For</th></tr>
+      <tr><td>Brainstorming</td><td>Rapid idea generation</td><td>Initial exploration</td></tr>
+      <tr><td>SCAMPER</td><td>Systematic creativity</td><td>Improving products/services</td></tr>
+      <tr><td>Reverse Thinking</td><td>Unconventional ideas</td><td>Overcoming creative blocks</td></tr>
+      <tr><td>Six Thinking Hats</td><td>Balanced evaluation</td><td>Comprehensive analysis</td></tr>
+      <tr><td>Creative Matrix</td><td>Structured yet flexible</td><td>Covering broad solution spaces systematically</td></tr>
+    </table>
+
+    <h3>Solution Selection</h3>
+    <p>After ideation, evaluate and choose the most promising ideas using 4 criteria (each scored 1–3, where <b>3 is best, 1 is least</b>; highest total score = chosen solution):</p>
+    <table class="notes-table">
+      <tr><th>Criterion</th><th>Question</th><th>Scale</th></tr>
+      <tr><td><b>Desirability</b></td><td>Will users like it?</td><td>No value → Middle value → Highly valuable</td></tr>
+      <tr><td><b>Feasibility</b></td><td>Can we make it happen?</td><td>Simple → Hard → Difficult (in time/money needed)</td></tr>
+      <tr><td><b>Viability</b></td><td>Is it sustainable?</td><td>Not sustainable → Self-sustaining → Profitable</td></tr>
+      <tr><td><b>Novelty</b></td><td>Is it innovative/unique?</td><td>No change → Incremental change → Radical change</td></tr>
+    </table>
+  `,
+  quiz:[
+    {q:"Ideation is best described as:", opts:["The final testing stage of Design Thinking","The creative stage of generating multiple ideas and solutions","Writing the business model canvas","Mapping stakeholders"], a:1, ex:"Ideation is the creative stage where the team generates a wide range of possible ideas/solutions."},
+    {q:"What does HMW stand for?", opts:["How Might We","How Must We","How May Work","High Market Worth"], a:0, ex:"HMW = 'How Might We' — short questions that launch brainstorms, derived from the POV."},
+    {q:"A good HMW question should be:", opts:["Extremely narrow with only one possible solution","So broad it has no boundaries at all","Broad enough for a range of solutions, yet narrow enough to give helpful boundaries","Written only by the tutor"], a:2, ex:"HMWs need to strike a balance — broad enough to open up solution space, narrow enough to stay focused."},
+    {q:"In SCAMPER, what does the 'E' stand for?", opts:["Enhance","Eliminate","Engage","Evaluate"], a:1, ex:"E = Eliminate: remove unnecessary features."},
+    {q:"In SCAMPER, 'Adapt' means:", opts:["Merge ideas/services together","Adjust elements from other contexts","Remove unnecessary features","Flip the approach upside down"], a:1, ex:"Adapt means adjusting elements borrowed from other contexts to fit the current idea."},
+    {q:"Which ideation technique emphasises 'quantity over quality' in its initial phase?", opts:["Six Thinking Hats","Brainstorming","SCAMPER","Creative Matrix"], a:1, ex:"Brainstorming's key characteristic is generating many ideas quickly, with quantity prioritised over quality at first."},
+    {q:"Reverse Thinking is most useful for:", opts:["Documenting requirements","Overcoming creative blocks by flipping the usual approach","Calculating profit margins","Mapping stakeholders"], a:1, ex:"Reverse Thinking deliberately flips the problem/approach to break habitual thinking and unlock new ideas."},
+    {q:"In the Six Thinking Hats method, which hat represents 'Cautions — risks or challenges'?", opts:["Yellow Hat","Black Hat","Green Hat","White Hat"], a:1, ex:"Black Hat = Cautions, discussing risks or challenges."},
+    {q:"Which Six Thinking Hats colour represents 'Benefits — positives or strengths'?", opts:["Red Hat","Blue Hat","Yellow Hat","White Hat"], a:2, ex:"Yellow Hat = Benefits, highlighting positives or strengths."},
+    {q:"The Blue Hat in Six Thinking Hats is used for:", opts:["Expressing emotions","Summarising and organising ideas (management)","Stating facts and data","Suggesting creative improvements"], a:1, ex:"Blue Hat = Management: summarising and organising the group's ideas clearly."},
+    {q:"In the Creative Matrix, the columns typically represent:", opts:["Solution enablers like Product/Service/Policy","The team members' names","HMW statements","Budget figures"], a:2, ex:"HMW statements are placed as column headers, while rows represent solution enablers (Product, Service, Policy, Events/Programmes, Wildcard)."},
+    {q:"Which of the following is NOT one of the 4 Solution Selection criteria?", opts:["Desirability","Feasibility","Popularity","Viability"], a:2, ex:"The 4 criteria are Desirability, Feasibility, Viability, and Novelty — 'Popularity' is not one of them."},
+    {q:"In Solution Selection scoring, what does a score of 3 represent?", opts:["The worst rating","The best/highest rating","A neutral rating","An invalid entry"], a:1, ex:"On the 1–3 scale used, 3 is the best and 1 is the least; the solution with the highest total score is chosen."},
+    {q:"'Is it sustainable? Can it become profitable?' relates to which selection criterion?", opts:["Desirability","Feasibility","Viability","Novelty"], a:2, ex:"Viability asks whether the idea is sustainable and has profit potential, ranging from not sustainable to self-sustaining to profitable."},
+  ]
+},
+
+{
+  id:"prototype",
+  short:"Prototype & Test",
+  week:"Weeks 8 & 11",
+  notes:`
+    <h2>6. Design Thinking — Prototype &amp; Test <span class="badge-count">Weeks 8 &amp; 11</span></h2>
+
+    <h3>Prototyping</h3>
+    <p>Prototyping is getting ideas out of your head and into the physical world:</p>
+    <ul>
+      <li><b>Learn</b> — a picture is worth a thousand words; a prototype is worth a thousand pictures</li>
+      <li><b>Explore</b> — build to think and spark additional ideas</li>
+      <li><b>Fail quickly and cheaply</b> — test ideas without investing too much time/money</li>
+    </ul>
+    <p>Other benefits: stop talking, start making; allow the concept to be experienced; get feedback for improvement; fail safely, cheaply and quickly to succeed happily.</p>
+
+    <h4>Iterative Prototyping</h4>
+    <p>Prototyping should be <b>rough</b> (ok to throw away), <b>rapid</b>, <b>cheap</b>, and allow user interaction — it's meant to: start a conversation with users, solve disagreements, and "build to think."</p>
+
+    <h4>Types of Prototype</h4>
+    <table class="notes-table">
+      <tr><th>Fidelity</th><th>Examples</th></tr>
+      <tr><td>Low fidelity</td><td>Paper &amp; Pen, Role Play, Storyboarding</td></tr>
+      <tr><td>Mid fidelity</td><td>Wireframes, Mock-ups, models</td></tr>
+      <tr><td>High fidelity</td><td>Pilots, etc.</td></tr>
+    </table>
+
+    <h4>Storyboarding</h4>
+    <p>A graphic representation of a story/narrative made of a sequence of scenes depicted with images and short statements — like telling a story using a comic book.</p>
+    <p>Structure the story around a scenario where your persona interacts with your solution:</p>
+    <ol>
+      <li><b>Beginning/Setting</b> — who, where, when</li>
+      <li><b>Middle</b> — problems, challenges</li>
+      <li><b>End</b> — overcome, resolution</li>
+    </ol>
+    <p>Use 2–3 story frames per section → <b>6–8 images total</b> (1 image per box). Beneath each frame, write the spoken lines and notes about what's happening. Stick figures are fine — focus on giving enough visual detail to convey the scene.</p>
+
+    <h4>Sketching a Paper Prototype</h4>
+    <p>Materials: paper, markers, pens. Goal: draw the app's main screens (home, features, navigation). Tip: focus on function before form — rough is fine! Label buttons, screens, and possible user flows.</p>
+
+    <h3>Test</h3>
+    <p>Testing is about <b>learning and improvement</b> — it is <b>not</b> about convincing the customer (not "selling" or "defending"). It should reveal usefulness/value without needing too much explanation, and should lead to iterating and improving the prototype.</p>
+
+    <h4>Why Test Your Prototype?</h4>
+    <ul>
+      <li><b>Early Validation</b> — catch design flaws or confusing features before development</li>
+      <li><b>User-Centered</b> — real users' reactions can differ from your assumptions</li>
+      <li><b>Save Resources</b> — paper tests cost almost nothing yet reveal major insights</li>
+    </ul>
+
+    <h4>Roles &amp; Setup</h4>
+    <table class="notes-table">
+      <tr><th>Role</th><th>Responsibility</th></tr>
+      <tr><td>User (Tester)</td><td>Acts as a first-time user, tries to complete a task with the prototype</td></tr>
+      <tr><td>Moderator</td><td>Prototype's creator/team member who guides the session and answers questions</td></tr>
+      <tr><td>Observer/Note-Taker</td><td>Watches the test, records confusion points, comments, and timing</td></tr>
+    </table>
+
+    <h4>The Testing Process</h4>
+    <ol>
+      <li>Introduce the scenario (e.g. "Your task: find a hawker stall")</li>
+      <li>User tries the prototype — tapping/pointing while "thinking aloud"</li>
+      <li>Observe &amp; note confusion, questions, errors</li>
+      <li>Gather quick feedback — "What worked well? What was hard to find?"</li>
+    </ol>
+
+    <h4>Recording Feedback — Feedback Grid</h4>
+    <div class="grid2x2">
+      <div class="q1"><b>Things one likes / finds notable</b></div>
+      <div class="q2"><b>Constructive Criticism</b></div>
+      <div class="q3"><b>Questions</b></div>
+      <div class="q4"><b>Ideas</b></div>
+    </div>
+    <p>Documentation can be written directly on paper screens, via sticky notes, a feedback form, or the feedback grid above.</p>
+
+    <h3>Refine &amp; Re-Test (Week 11)</h3>
+    <p><b>Why we iterate:</b> continuous improvement (each round guided by real user insights); user-centric (design reflects real needs, not assumptions); time &amp; resource savings (spot flaws early, fewer costly fixes later).</p>
+    <ol>
+      <li><b>Review Feedback</b> — identify the top 1–2 issues from the previous test session; prioritise fixes with the biggest usability impact</li>
+      <li><b>Implement Changes</b> — modify sketches, label improvements clearly, collaborate quickly with teammates ("Is this clearer? Does it solve the user's problem?")</li>
+      <li><b>Quick Re-test</b> — have a peer/teammate try the revised prototype on the same task; observe new issues/improvements; ask "Is it more intuitive now? What's still confusing?"</li>
+    </ol>
+    <p><b>Important:</b> the final prototype submitted for Assignment 2 must take the form of a <b>wireframe on a digital tool</b> (e.g. Figma, PowerPoint) — iteration is an ongoing process, there's always room to refine.</p>
+  `,
+  quiz:[
+    {q:"Prototyping is best described as:", opts:["Writing the final production code","Getting ideas out of your head and into the physical world","Interviewing stakeholders","Creating the business model canvas"], a:1, ex:"Prototyping turns abstract ideas into something physical/tangible to learn, explore, and fail quickly/cheaply."},
+    {q:"Which of these is a LOW fidelity prototype example?", opts:["Wireframes","Pilots","Paper & Pen / Role Play / Storyboarding","Working software model"], a:2, ex:"Low fidelity prototypes include Paper & Pen, Role Play, and Storyboarding. Wireframes are mid-fidelity; pilots are high-fidelity."},
+    {q:"A storyboard's three main narrative sections are:", opts:["Intro, Body, Conclusion","Beginning/Setting, Middle, End","Empathize, Define, Ideate","Plan, Design, Deploy"], a:1, ex:"Storyboards follow Beginning/Setting (who, where, when), Middle (problems/challenges), and End (overcome/resolution)."},
+    {q:"How many images are typically recommended for a full storyboard?", opts:["1-2","6-8","20-25","50+"], a:1, ex:"The guidance recommends creating 6-8 images, roughly 2-3 frames per narrative section."},
+    {q:"When sketching a paper prototype, what should you focus on first?", opts:["Perfect colours and fonts","Function before form — rough is fine","Adding animations","Legal disclaimers"], a:1, ex:"The tip given is to focus on function before form; rough sketches are perfectly fine at this stage."},
+    {q:"What is testing in Design Thinking primarily about?", opts:["Convincing the customer to buy","Learning and improvement, not selling or defending","Meeting a legal requirement","Comparing competitor pricing"], a:1, ex:"Testing is about learning and improving the prototype — not about 'selling' or 'defending' it to the customer."},
+    {q:"Which of the following is NOT one of the 3 roles in prototype testing?", opts:["User (Tester)","Moderator","Observer/Note-Taker","Sponsor"], a:3, ex:"The 3 roles are User (Tester), Moderator, and Observer/Note-Taker — 'Sponsor' is not part of this setup."},
+    {q:"In the Feedback Grid, which quadrant captures 'Things one likes or finds notable'?", opts:["Top-left","Top-right (Constructive Criticism)","Bottom-left (Questions)","Bottom-right (Ideas)"], a:0, ex:"The Feedback Grid's top-left quadrant is for things the tester liked or found notable, alongside Constructive Criticism, Questions, and Ideas."},
+    {q:"Why is testing considered a resource-saving activity?", opts:["Paper tests cost almost nothing yet reveal major usability insights","Testing requires expensive equipment","It skips the need for a prototype","It replaces the need for user research"], a:0, ex:"Paper prototypes/tests are cheap to make and run, yet can reveal significant design flaws early — saving resources overall."},
+    {q:"In Week 11 (Refine & Re-Test), what should you do FIRST after a test session?", opts:["Immediately move to a digital wireframe","Review feedback and identify the top 1-2 priority issues","Discard the prototype","Recruit new testers only"], a:1, ex:"The process starts with reviewing testing notes to identify and prioritise the top 1-2 issues before implementing changes."},
+    {q:"Why do teams iterate on their prototypes multiple times?", opts:["It's required for grading only","Continuous improvement, staying user-centric, and saving time/resources by catching flaws early","To make the prototype more complex","To avoid testing with real users"], a:1, ex:"Iteration ensures continuous improvement guided by real user insight, keeps the design user-centric, and saves resources by catching flaws early."},
+    {q:"What format must the FINAL prototype take for Assignment 2 submission?", opts:["A paper prototype only","A wireframe on a digital tool (e.g. Figma, PowerPoint)","A verbal pitch only","A spreadsheet"], a:1, ex:"The brief specifies the final prototype for Assignment 2 must be a wireframe built on a digital tool like Figma or PowerPoint."},
+  ]
+},
+
+{
+  id:"sdlc",
+  short:"Software Development Process",
+  week:"Week 13",
+  notes:`
+    <h2>7. Software Development Process <span class="badge-count">Week 13</span></h2>
+
+    <h3>Stakeholders &amp; End-Users</h3>
+    <ul>
+      <li><b>Stakeholder</b> — anyone affected by or who has an effect on the project's success (end-users, clients, managers, system administrators). A successful project addresses ALL stakeholders' needs.</li>
+      <li><b>End-users</b> — people who will use the product/solution; one of the most important considerations in design; end-users are also considered stakeholders.</li>
+    </ul>
+
+    <h3>Software Development Life Cycle (SDLC)</h3>
+    <p>A systematic process/framework defining tasks at each step of software development, aiming to produce high-quality software that meets/exceeds customer expectations within time &amp; cost estimates.</p>
+    <table class="notes-table">
+      <tr><th>Phase</th><th>Objective</th></tr>
+      <tr><td>Planning</td><td>Identify scope, ensure feasibility, develop schedule/resource plan/budget</td></tr>
+      <tr><td>Analysis</td><td>Understand and document business needs and processing requirements</td></tr>
+      <tr><td>Design</td><td>Design the solution system based on requirements &amp; analysis decisions</td></tr>
+      <tr><td>Implementation</td><td>Build the software solution per business needs</td></tr>
+      <tr><td>Testing</td><td>Verify inherent qualities; validate the solution addresses the problem</td></tr>
+      <tr><td>Deployment</td><td>Make the software available in its context of operation and use</td></tr>
+      <tr><td>Maintenance</td><td>Keep the solution addressing the problem over its operating life; handle decommissioning at end-of-life</td></tr>
+    </table>
+
+    <h3>Software Development Methodologies</h3>
+    <p>A methodology includes pre-defined deliverables/artifacts created by the project team. Two key examples: <b>Waterfall</b> and <b>Agile</b>.</p>
+
+    <h4>Waterfall Model</h4>
+    <p>A highly structured, linear process relying heavily on up-front planning: each phase's output feeds the next phase sequentially, like a waterfall.</p>
+    <p><b>When to use:</b> requirements are clear &amp; fixed; technology is well understood/not dynamic; project is short.</p>
+    <table class="notes-table">
+      <tr><th>Benefits</th><th>Drawbacks</th></tr>
+      <tr><td>Simple, easy to understand and use</td><td>No working software until late in the life cycle</td></tr>
+      <tr><td>Easy to manage — specific deliverables and review per phase</td><td>High risk and uncertainty</td></tr>
+      <tr><td>Works well for smaller, well-understood projects</td><td>Cannot accommodate changing requirements</td></tr>
+      <tr><td>Process and results are well documented</td><td>"Big-bang" integration at the very end — bottlenecks found too late</td></tr>
+    </table>
+
+    <h4>Agile Software Development</h4>
+    <p>A lightweight framework promoting iterative development and close collaboration between the dev team and business side. An umbrella term for methods/practices based on the Agile Manifesto. Produces solutions via evolution/collaboration between self-organising, cross-functional teams (e.g. Scrum).</p>
+    <p><b>When to use:</b> projects with frequently changing requirements.</p>
+
+    <h4>The Agile Manifesto (4 Values)</h4>
+    <ul>
+      <li>Individuals and interactions <b>over</b> processes and tools</li>
+      <li>Working software <b>over</b> comprehensive documentation</li>
+      <li>Customer collaboration <b>over</b> contract negotiation</li>
+      <li>Responding to change <b>over</b> following a plan</li>
+    </ul>
+    <p><i>(While there is value in the items on the right, the items on the left are valued more.)</i></p>
+
+    <h4>Selected Agile Manifesto Principles</h4>
+    <ul>
+      <li>Highest priority: satisfy the customer through early &amp; continuous delivery of valuable software</li>
+      <li>Welcome changing requirements, even late in development</li>
+      <li>Deliver working software frequently (weeks, not months)</li>
+      <li>Business people and developers must work together daily</li>
+      <li>Working software is the primary measure of progress</li>
+      <li>Simplicity — maximising the amount of work NOT done — is essential</li>
+      <li>Teams reflect regularly and tune their behaviour accordingly</li>
+    </ul>
+
+    <h4>Pros &amp; Cons of Agile</h4>
+    <table class="notes-table">
+      <tr><th>Benefits</th><th>Drawbacks</th></tr>
+      <tr><td>Customers see progress continuously each sprint</td><td>Depends heavily on customer interaction — unclear customer can misdirect the team</td></tr>
+      <tr><td>Each sprint delivers working software meeting the "definition of done"</td><td>Total cost may be higher than Waterfall</td></tr>
+      <tr><td>Responsive to changing requirements, even late-stage</td><td>Technology transfer to new members is harder due to less documentation</td></tr>
+      <tr><td>Constant two-way communication, clear visibility for all stakeholders</td><td>—</td></tr>
+    </table>
+    <p><b>Agile methodologies:</b> Scrum, Kanban, Lean, Extreme Programming (XP), Feature Driven Development (FDD), Dynamic Software Development Method (DSDM).</p>
+
+    <h3>Requirement Analysis</h3>
+    <h4>Why it matters</h4>
+    <ul>
+      <li><b>Right Product</b> — meet client/end-user needs (not just wants); understand the problem &amp; tasks to accomplish</li>
+      <li><b>Done Right &amp; Managed Right</b> — development must start with quality requirements before planning/design/implementation/testing</li>
+    </ul>
+    <h4>What is a Requirement?</h4>
+    <p>A software capability needed by the user to solve a problem or achieve an objective. All stakeholders must reach a common understanding of what the product will be and do.</p>
+
+    <h4>4 Activities in Requirement Analysis</h4>
+    <ol>
+      <li><b>Eliciting Requirements</b> — communicating with customers/users to determine requirements (aka requirements gathering)</li>
+      <li><b>Analysing Requirements</b> — determining if requirements are unclear, incomplete, ambiguous, or contradictory, then resolving issues</li>
+      <li><b>Requirements Modelling</b> — documenting via natural-language docs, use cases, user stories, or process specs</li>
+      <li><b>Review and Retrospective</b> — team reflects on the iteration and identifies improvement actions</li>
+    </ol>
+
+    <h4>Types of Requirements</h4>
+    <div class="grid2x2">
+      <div class="q1"><b>Functional Requirements</b><br>Capabilities/features the system MUST HAVE. E.g. "An application that can support placing of orders by users."</div>
+      <div class="q3"><b>Non-Functional Requirements</b><br>Constraints the new system MUST MEET. E.g. "Saving of orders must complete in less than 5 seconds."</div>
+    </div>
+
+    <h4>Properties of a Requirement</h4>
+    <ul>
+      <li><b>Unambiguous</b> — must be clear and understandable to all</li>
+      <li><b>Consistent</b></li>
+      <li><b>Comprehensive/Exhaustive</b> — steps must be clear and precise</li>
+      <li><b>Prioritised</b> — realistic about timeline; implement the most important features first</li>
+      <li><b>Verifiable</b> — must be verifiable that developed features satisfy the requirement</li>
+    </ul>
+
+    <h4>Requirement Activities in Practice</h4>
+    <ol>
+      <li>Gather detailed information — talk to users, read documentation, develop domain expertise, collect technical info</li>
+      <li>Identify functional requirements — e.g. ATM: validate card, dispense money, alert staff when cash is low</li>
+      <li>Identify non-functional requirements — e.g. developed in Python, support 1000 concurrent users</li>
+      <li>Define non-functional requirements — e.g. ATM shall communicate using 256-bit encryption (security), validate PIN in 5 seconds (performance)</li>
+      <li>Prioritise requirements — balance limited resources vs user needs; watch for <b>scope creep</b> (uncontrolled growth of the function list → cost overruns, implementation delays/slippage)</li>
+      <li>Evaluate requirements — validate accuracy/correctness ("Are we building the right product?"); process is iterative</li>
+    </ol>
+
+    <h4>Techniques for Requirement Gathering</h4>
+    <table class="notes-table">
+      <tr><th>Technique</th><th>Notes</th></tr>
+      <tr><td>Interview users &amp; stakeholders</td><td>Most widely used fact-finding technique; mix of open and close-ended questions</td></tr>
+      <tr><td>Distribute &amp; collect questionnaires</td><td>Close-ended questions, opinion questions, explanations of procedure/problem</td></tr>
+      <tr><td>Review inputs, outputs &amp; documentation</td><td>External (industry journals/best-practice studies) and internal (existing business docs/procedures) sources</td></tr>
+      <tr><td>Observe &amp; document business processes</td><td>Diagram info into workflows/activity diagrams (activities, relationships, responsible personnel)</td></tr>
+      <tr><td>Build effective prototypes</td><td><b>Discovery</b> prototype (verify concept, then discarded); <b>Evolving</b> prototype (working model that grows into the system); <b>Mock-up</b> (viewing only, not executable)</td></tr>
+      <tr><td>Research vendor solutions</td><td>Look at existing vendor/market solutions for reference</td></tr>
+    </table>
+  `,
+  quiz:[
+    {q:"Which best describes a 'Stakeholder' in software development?", opts:["Only the paying client","Anyone affected by or who has an effect on the success of the project","Only the software developers","Only the system testers"], a:1, ex:"Stakeholders include end-users, clients, managers, system administrators — anyone affected by or affecting project success."},
+    {q:"SDLC stands for and is best described as:", opts:["A marketing framework","A systematic framework/process defining tasks at each step of software development","A single programming language","A hardware specification"], a:1, ex:"SDLC (Software Development Life Cycle) is a framework/systematic process defining the tasks at each development step."},
+    {q:"Which SDLC phase focuses on 'understanding and documenting business needs and processing requirements'?", opts:["Planning","Analysis","Design","Deployment"], a:1, ex:"The Analysis phase documents business needs and processing requirements in detail."},
+    {q:"The 'Deployment' phase's objective is to:", opts:["Identify project scope and feasibility","Build the software per business needs","Make the developed software available in its context of operation and use","Verify inherent quality of the system"], a:2, ex:"Deployment makes the developed solution available for actual operational use."},
+    {q:"The Waterfall Model is best used when:", opts:["Requirements change frequently","Requirements are clear/fixed, technology is well understood, and the project is short","The team has no documentation skills","Customers want continuous delivery"], a:1, ex:"Waterfall suits projects with clear, fixed requirements, understood technology, and short duration."},
+    {q:"A key DRAWBACK of the Waterfall Model is:", opts:["Too much working software delivered too early","Integration happens as a 'big-bang' at the very end, hiding issues until late","It is hard to document","It requires daily customer collaboration"], a:1, ex:"Waterfall's 'big-bang' integration at the end prevents catching technological/business bottlenecks earlier."},
+    {q:"Agile Software Development is best used when:", opts:["Requirements are fixed and won't change","The project has frequently changing requirements","The project is very short","No collaboration with business side is needed"], a:1, ex:"Agile is designed for projects with frequently changing requirements, unlike Waterfall."},
+    {q:"According to the Agile Manifesto, which is valued MORE?", opts:["Comprehensive documentation over working software","Working software over comprehensive documentation","Contract negotiation over customer collaboration","Following a plan over responding to change"], a:1, ex:"The Agile Manifesto values working software over comprehensive documentation (among its four core values)."},
+    {q:"Which of these is a named Agile methodology?", opts:["Scrum","SWOT","HMW","POV"], a:0, ex:"Scrum is a well-known Agile methodology, alongside Kanban, Lean, XP, FDD, and DSDM."},
+    {q:"A DRAWBACK of Agile compared to Waterfall mentioned in the notes is:", opts:["Agile never produces working software","Total cost may be higher than Waterfall","Agile cannot handle changing requirements","Agile requires no customer interaction"], a:1, ex:"One noted drawback is that Agile's total cost may end up higher than Waterfall's."},
+    {q:"A 'Requirement' is best defined as:", opts:["A marketing statement","A software capability needed by the user to solve a problem or achieve an objective","A stakeholder's personal opinion","A UI colour scheme"], a:1, ex:"A requirement is a software capability the user needs to solve a problem or achieve an objective."},
+    {q:"Which is one of the 4 activities in Requirement Analysis?", opts:["Eliciting Requirements","Building the final product","Marketing the software","Deploying the system"], a:0, ex:"The 4 activities are Eliciting, Analysing, Requirements Modelling, and Review & Retrospective."},
+    {q:"'An application that can support placing of orders by users' is an example of a:", opts:["Non-functional requirement","Functional requirement","Business model","SWOT factor"], a:1, ex:"This describes a capability/feature the system MUST HAVE — a functional requirement."},
+    {q:"'Saving of orders must be completed in less than 5 seconds' is an example of a:", opts:["Functional requirement","Non-functional requirement","Persona attribute","Stakeholder role"], a:1, ex:"This is a constraint the system must meet (performance) — a non-functional requirement."},
+    {q:"Which of these is NOT one of the 5 properties of a good requirement?", opts:["Unambiguous","Verifiable","Prioritised","Colourful"], a:3, ex:"The 5 properties are Unambiguous, Consistent, Comprehensive/Exhaustive, Prioritised, and Verifiable."},
+    {q:"'Scope creep' refers to:", opts:["A testing technique","The tendency of the function list to grow in an uncontrolled manner, causing cost overruns/delays","A type of prototype","An Agile ceremony"], a:1, ex:"Scope creep is uncontrolled growth of requirements/features, which can cause cost overruns and implementation delays."},
+    {q:"Which requirement-gathering technique is described as 'the most widely used fact-finding technique'?", opts:["Questionnaires","Interviewing users and stakeholders","Reviewing vendor solutions","Building prototypes"], a:1, ex:"Interviewing users and other stakeholders is noted as the most widely used fact-finding technique."},
+    {q:"A prototype 'created to verify a concept and then discarded' is called a:", opts:["Evolving prototype","Discovery prototype","Mock-up","Pilot"], a:1, ex:"A Discovery prototype is built to verify a concept and is then discarded, unlike an Evolving prototype which grows into the final system."},
+  ]
+},
+
+];
+
+/* ============================================================
+   RENDER LOGIC
+   ============================================================ */
+let currentTab = TOPICS[0].id;
+let quizState = {}; // per topic-id: {answered:{}, correct:count}
+let fullTestState = null;
+
+function initState(){
+  TOPICS.forEach(t=>{ quizState[t.id] = {answered:{}, correct:0}; });
+}
+initState();
+
+function buildNav(){
+  const nav = document.getElementById('tabNav');
+  nav.innerHTML = '';
+  TOPICS.forEach(t=>{
+    const b = document.createElement('button');
+    b.textContent = t.short;
+    b.dataset.id = t.id;
+    b.className = (t.id===currentTab)?'active':'';
+    b.onclick = ()=>{ currentTab = t.id; render(); };
+    nav.appendChild(b);
+  });
+  const b2 = document.createElement('button');
+  b2.textContent = '🎯 Full Practice Test';
+  b2.dataset.id = 'fulltest';
+  b2.className = (currentTab==='fulltest')?'active':'';
+  b2.onclick = ()=>{ currentTab='fulltest'; render(); };
+  nav.appendChild(b2);
+}
+
+function renderQuizCard(topicId, item, idx, containerId){
+  const state = quizState[topicId];
+  const card = document.createElement('div');
+  card.className = 'qcard';
+  const already = state.answered[idx];
+  card.innerHTML = `<div class="qtopic">Question ${idx+1}</div><div class="qtext">${item.q}</div>`;
+  item.opts.forEach((opt, oi)=>{
+    const btn = document.createElement('button');
+    btn.className = 'opt' + (already!==undefined ? ' disabled' : '');
+    btn.textContent = opt;
+    if(already!==undefined){
+      if(oi === item.a) btn.classList.add('correct');
+      else if(oi === already && already !== item.a) btn.classList.add('wrong');
+    }
+    btn.onclick = ()=>{
+      if(state.answered[idx] !== undefined) return;
+      state.answered[idx] = oi;
+      if(oi === item.a) state.correct++;
+      render();
+    };
+    card.appendChild(btn);
+  });
+  const ex = document.createElement('div');
+  ex.className = 'explain' + (already!==undefined ? ' show' : '');
+  ex.textContent = item.ex;
+  card.appendChild(ex);
+  return card;
+}
+
+function renderTopic(topic){
+  const main = document.getElementById('mainArea');
+  const panel1 = document.createElement('div');
+  panel1.className = 'panel';
+  panel1.innerHTML = topic.notes;
+  main.appendChild(panel1);
+
+  const panel2 = document.createElement('div');
+  panel2.className = 'panel';
+  const state = quizState[topic.id];
+  const total = topic.quiz.length;
+  const answeredCount = Object.keys(state.answered).length;
+  panel2.innerHTML = `<h2>Practice Questions — ${topic.short} <span class="badge-count">${total} Qs</span></h2>
+    <div class="quiz-controls">
+      <button class="secondary" id="resetBtn">Reset this topic's quiz</button>
+      <div class="score-badge">Score: ${state.correct} / ${answeredCount} answered (of ${total})</div>
+    </div>
+    <div id="qcontainer"></div>`;
+  main.appendChild(panel2);
+
+  document.getElementById('resetBtn').onclick = ()=>{
+    quizState[topic.id] = {answered:{}, correct:0};
+    render();
+  };
+  const qc = document.getElementById('qcontainer');
+  topic.quiz.forEach((item, idx)=>{
+    qc.appendChild(renderQuizCard(topic.id, item, idx, 'qcontainer'));
+  });
+}
+
+function buildFullPool(){
+  let pool = [];
+  TOPICS.forEach(t=>{
+    t.quiz.forEach((item, idx)=>{
+      pool.push({topic:t.short, item, key:t.id+'_'+idx});
+    });
+  });
+  return pool;
+}
+
+function shuffle(arr){
+  const a = arr.slice();
+  for(let i=a.length-1;i>0;i--){
+    const j = Math.floor(Math.random()*(i+1));
+    [a[i],a[j]]=[a[j],a[i]];
+  }
+  return a;
+}
+
+function renderFullTest(){
+  const main = document.getElementById('mainArea');
+  const pool = buildFullPool();
+
+  if(!fullTestState){
+    fullTestState = {order: shuffle(pool), answered:{}, correct:0, size: pool.length};
+  }
+
+  const panel = document.createElement('div');
+  panel.className = 'panel';
+  const answeredCount = Object.keys(fullTestState.answered).length;
+  panel.innerHTML = `<h2>🎯 Full Practice Test <span class="badge-count">${fullTestState.size} Questions — All Topics Mixed</span></h2>
+    <p style="color:var(--muted); font-size:0.85rem;">Questions are drawn from every topic and shuffled. Great for a final review before Test 1.</p>
+    <div class="quiz-controls">
+      <button id="reshuffleBtn">Reshuffle &amp; Restart</button>
+      <button class="secondary" id="reset2Btn">Reset (keep order)</button>
+      <div class="score-badge">Score: ${fullTestState.correct} / ${answeredCount} answered (of ${fullTestState.size})</div>
+    </div>
+    <div id="ftcontainer"></div>`;
+  main.appendChild(panel);
+
+  document.getElementById('reshuffleBtn').onclick = ()=>{
+    fullTestState = {order: shuffle(pool), answered:{}, correct:0, size: pool.length};
+    render();
+  };
+  document.getElementById('reset2Btn').onclick = ()=>{
+    fullTestState.answered = {};
+    fullTestState.correct = 0;
+    render();
+  };
+
+  const ftc = document.getElementById('ftcontainer');
+  fullTestState.order.forEach((entry, idx)=>{
+    const already = fullTestState.answered[idx];
+    const card = document.createElement('div');
+    card.className = 'qcard';
+    card.innerHTML = `<div class="qtopic">Question ${idx+1} of ${fullTestState.size} · Topic: ${entry.topic}</div><div class="qtext">${entry.item.q}</div>`;
+    entry.item.opts.forEach((opt, oi)=>{
+      const btn = document.createElement('button');
+      btn.className = 'opt' + (already!==undefined ? ' disabled' : '');
+      btn.textContent = opt;
+      if(already!==undefined){
+        if(oi === entry.item.a) btn.classList.add('correct');
+        else if(oi === already && already !== entry.item.a) btn.classList.add('wrong');
+      }
+      btn.onclick = ()=>{
+        if(fullTestState.answered[idx] !== undefined) return;
+        fullTestState.answered[idx] = oi;
+        if(oi === entry.item.a) fullTestState.correct++;
+        render();
+      };
+      card.appendChild(btn);
+    });
+    const ex = document.createElement('div');
+    ex.className = 'explain' + (already!==undefined ? ' show' : '');
+    ex.textContent = entry.item.ex;
+    card.appendChild(ex);
+    ftc.appendChild(card);
+  });
+
+  if(answeredCount === fullTestState.size && fullTestState.size>0){
+    const results = document.createElement('div');
+    results.className = 'panel';
+    const pct = Math.round((fullTestState.correct/fullTestState.size)*100);
+    results.innerHTML = `<div id="resultsBox" class="show" style="text-align:center;">
+      <h2 style="border:none;">Test Complete!</h2>
+      <div class="bigscore">${fullTestState.correct} / ${fullTestState.size}</div>
+      <p style="color:var(--muted);">${pct}% correct</p>
+    </div>`;
+    main.insertBefore(results, main.firstChild);
+  }
+}
+
+function render(){
+  buildNav();
+  const main = document.getElementById('mainArea');
+  main.innerHTML = '';
+  if(currentTab === 'fulltest'){
+    renderFullTest();
+  } else {
+    const topic = TOPICS.find(t=>t.id===currentTab);
+    renderTopic(topic);
+  }
+  window.scrollTo({top:0, behavior:'instant'});
+}
+
+render();
+</script>
+</body>
+</html>
