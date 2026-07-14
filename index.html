@@ -365,6 +365,18 @@ const designSub = {
     <div class="note">General ideation tips: generate ideas openly without criticism, encourage diverse views, aim for quantity first (refine quality later), document ideas clearly.</div>
   </div>
   <div class="card">
+    <h2>Ideation Techniques — Pros &amp; Cons</h2>
+    <p style="color:var(--muted);font-size:.85rem;">Directly tests the learning outcome: "evaluate the effectiveness of ideation techniques by identifying their strengths and challenges."</p>
+    <table>
+      <tr><th>Technique</th><th>Pros (Strength)</th><th>Cons (Challenge)</th></tr>
+      <tr><td><b>Brainstorming</b></td><td>Fast, easy to run, generates volume of ideas, low barrier to participate</td><td>Can produce shallow/obvious ideas; louder voices may dominate; no structure to push deeper</td></tr>
+      <tr><td><b>SCAMPER</b></td><td>Structured prompts push past obvious ideas; good for refining an existing concept</td><td>Needs an existing idea/product to work from — not ideal for starting from a blank page; can feel mechanical</td></tr>
+      <tr><td><b>Reverse Thinking</b></td><td>Breaks habitual thinking patterns; surfaces unconventional ideas fast</td><td>Reversed ideas can be impractical or absurd; still needs filtering afterward</td></tr>
+      <tr><td><b>Six Thinking Hats</b></td><td>Balanced, comprehensive — forces the team to consider emotion, risk, and facts, not just the first instinct</td><td>Slower to run; needs a facilitator to keep everyone on the same "hat" at once</td></tr>
+      <tr><td><b>Creative Matrix</b></td><td>Systematically covers a broad solution space; constraint of each cell sparks focused ideas</td><td>Can feel restrictive if categories are poorly chosen; needs more setup/prep than free brainstorming</td></tr>
+    </table>
+  </div>
+  <div class="card">
     <h2>Solution Selection</h2>
     <p>After ideation, evaluate and choose the most promising ideas using 4 criteria. <b>Score 1 (least) to 3 (best)</b> on each — highest total score = chosen solution.</p>
     <table>
@@ -394,6 +406,14 @@ const designSub = {
       <tr><td><b>Mid fidelity</b></td><td>Wireframes, mock-ups, models</td></tr>
       <tr><td><b>High fidelity</b></td><td>Pilots, etc.</td></tr>
     </table>
+    <h4>Prototype Fidelity — Pros &amp; Cons</h4>
+    <table>
+      <tr><th>Fidelity</th><th>Pros</th><th>Cons</th></tr>
+      <tr><td><b>Low fidelity</b></td><td>Very cheap &amp; fast to make; easy to throw away and redo; encourages focusing on function over form; lowers fear of "wasting" work</td><td>Looks rough — may be hard for some users to imagine as a real product; limited interactivity; can't test fine visual/UX details</td></tr>
+      <tr><td><b>Mid fidelity</b></td><td>Clearer layout and flow than paper; still faster/cheaper than a working build; good for testing navigation and structure</td><td>Takes more time/tooling than low-fi; still not fully interactive/functional, so some usability issues only surface later</td></tr>
+      <tr><td><b>High fidelity</b></td><td>Closest to the real product — most realistic feedback on look, feel and function; good for final validation/pilots</td><td>Expensive and slow to build; harder to change or discard; risks "falling in love" with a design too early before it's validated</td></tr>
+    </table>
+    <div class="note">💡 Exam angle: the whole point of starting <b>low fidelity</b> is to fail quickly and cheaply — the "cost of change" rises sharply as fidelity increases.</div>
   </div>
   <div class="card">
     <h2>Storyboarding</h2>
@@ -543,6 +563,20 @@ contentHTML.sdlc = `
     <tr><td><b>Observe &amp; document business processes</b></td><td>Diagram info into workflows; create activity diagrams (activities, relationships, responsible personnel)</td></tr>
     <tr><td><b>Build effective prototypes</b></td><td><b>Discovery prototype</b> (verify concept, then discard) vs <b>Evolving prototype</b> (working model that grows into the system) vs <b>Mock-up</b> (example of final product, for viewing only, not executable)</td></tr>
     <tr><td><b>Research vendor solutions</b></td><td>Look at existing market/vendor products for reference</td></tr>
+  </table>
+</div>
+
+<div class="card">
+  <h2>Requirement Gathering Techniques — Pros &amp; Cons</h2>
+  <p style="color:var(--muted);font-size:.85rem;">Directly tests the learning outcome: "describe different techniques for requirement gathering including their advantages and disadvantages."</p>
+  <table>
+    <tr><th>Technique</th><th>Advantages</th><th>Disadvantages</th></tr>
+    <tr><td><b>Interviews</b></td><td>Most widely used; rich, detailed info; can probe/follow up in real time; builds rapport with stakeholders</td><td>Time-consuming (1-to-1); scheduling many stakeholders is hard; answers can be biased by how questions are asked</td></tr>
+    <tr><td><b>Questionnaires</b></td><td>Reaches many respondents quickly &amp; cheaply; easy to analyse close-ended/opinion answers; anonymity may get more honest answers</td><td>No opportunity to probe deeper on an answer; poorly worded questions give poor/ambiguous data; low response rates possible</td></tr>
+    <tr><td><b>Review documentation</b></td><td>Fast preliminary understanding without interrupting anyone's time; existing docs act as visual aids; draws on external "best practice" studies too</td><td>Documentation may be outdated or incomplete; doesn't capture undocumented/tacit knowledge or unstated needs</td></tr>
+    <tr><td><b>Observe &amp; document processes</b></td><td>Captures what people <i>actually do</i>, not just what they say; reveals workflow steps/relationships that interviews may miss</td><td>Time-consuming to observe over a period; people may change behaviour knowing they're watched (observer effect)</td></tr>
+    <tr><td><b>Build prototypes</b></td><td>Makes abstract requirements concrete; users can react to something tangible, surfacing needs they couldn't otherwise articulate</td><td>Takes time/effort to build even a discovery prototype; users may focus on surface look instead of underlying requirement</td></tr>
+    <tr><td><b>Research vendor solutions</b></td><td>Leverages existing market research/experience; avoids reinventing the wheel; benchmarks realistic options</td><td>Vendor products may not fit the organisation's specific needs; risk of anchoring requirements to what a vendor already sells</td></tr>
   </table>
 </div>
 
@@ -740,6 +774,11 @@ const QUESTIONS = [
 {topic:'Design Thinking', type:'multi', text:'Which of the following are roles in the prototype Testing process? (Select all that apply)', options:['User (Tester)','Moderator','Observer/Note-Taker','Stakeholder Mapper','Sprint Master'], correct:[0,1,2], explain:'The 3 defined roles in testing are User, Moderator, and Observer/Note-Taker.'},
 {topic:'Design Thinking', type:'multi', text:'Which of the following are quadrants of the Feedback Grid? (Select all that apply)', options:['Things one likes/finds notable','Constructive Criticism','Questions','Ideas','Budget Estimate'], correct:[0,1,2,3], explain:'The Feedback Grid has 4 quadrants: Likes/notable, Constructive Criticism, Questions, and Ideas.'},
 {topic:'Design Thinking', type:'multi', text:'Which reasons explain why observation is important during Empathize? (Select all that apply)', options:['Interviewees might not know what they want','Interviewees might not be able to articulate what they want','It discovers insights on how people use/misuse things in natural settings','It replaces the need for a Point of View statement','It guarantees a working prototype'], correct:[0,1,2], explain:'Observation reveals unspoken/unknown needs and natural behaviour — it doesn\'t replace POV or guarantee a prototype.'},
+{topic:'Design Thinking', type:'single', text:'What is a key CON of the Brainstorming technique?', options:['It requires an existing product to work from','Louder voices may dominate and ideas can stay shallow without structure','It cannot be done in groups','It only works for refining, not generating, ideas'], correct:[1], explain:'Brainstorming is fast and generates volume, but without structure it risks shallow ideas and domination by louder participants.'},
+{topic:'Design Thinking', type:'single', text:'A key CON of SCAMPER as an ideation technique is that:', options:['It cannot be used to improve an existing product','It needs an existing idea/product to work from, so it isn\'t ideal for starting from a blank page','It only generates one idea at a time','It is slower than Six Thinking Hats'], correct:[1], explain:'SCAMPER\'s structured prompts modify an existing idea — it isn\'t well suited to generating ideas from a completely blank page.'},
+{topic:'Design Thinking', type:'single', text:'Why does prototyping typically START at low fidelity rather than high fidelity?', options:['Low fidelity looks more professional','The cost of change rises sharply as fidelity increases, so failing early/cheaply is the goal','High fidelity prototypes cannot be tested with users','Low fidelity is required by Respondus Lockdown Browser'], correct:[1], explain:'Starting low-fidelity keeps the "cost of change" low, letting teams fail quickly and cheaply before investing more time/money.'},
+{topic:'Design Thinking', type:'single', text:'Which is a genuine DRAWBACK of a high-fidelity prototype?', options:['It is too cheap to build','It is expensive/slow to build and harder to discard or change','It cannot be shown to real users','It skips the Empathize stage'], correct:[1], explain:'High-fidelity prototypes are the most realistic but are costly, slow to build, and harder to throw away or change compared to low/mid fidelity.'},
+{topic:'Design Thinking', type:'multi', text:'Which are genuine ADVANTAGES of low-fidelity prototypes (e.g. paper &amp; pen)? (Select all that apply)', options:['Very cheap and fast to make','Easy to throw away and redo','Provides the most realistic look and feel of the final product','Encourages focusing on function over form'], correct:[0,1,3], explain:'Low-fidelity prototypes are cheap, fast, and disposable, and keep focus on function over form. The "most realistic look and feel" describes HIGH fidelity, not low.'},
 
 // ---- SOFTWARE DEVELOPMENT PROCESS ----
 {topic:'Software Dev Process', type:'single', text:'SDLC is also known as the:', options:['Software Design Lifestyle','Software Development Process','System Design Language Cycle','Software Deployment Life Cycle'], correct:[1], explain:'SDLC is also called the Software Development Process.'},
@@ -759,6 +798,10 @@ const QUESTIONS = [
 {topic:'Software Dev Process', type:'multi', text:'Which of the following are recognised techniques for requirement gathering? (Select all that apply)', options:['Interview users and stakeholders','Distribute & collect questionnaires','Build effective prototypes','Six Thinking Hats','Research vendor solutions'], correct:[0,1,2,4], explain:'Interviews, questionnaires, prototyping, and researching vendor solutions are requirement-gathering techniques. Six Thinking Hats is an ideation technique from Design Thinking.'},
 {topic:'Software Dev Process', type:'multi', text:'Which are TRUE about the Waterfall model? (Select all that apply)', options:['It is a linear, sequential process','Each phase\'s output feeds into the next phase','It easily accommodates changing requirements','It works well for smaller, well-understood projects','It welcomes late requirement changes'], correct:[0,1,3], explain:'Waterfall is linear/sequential, output of one phase feeds the next, and suits small well-understood projects. It does NOT accommodate changing requirements well — that\'s Agile\'s strength.'},
 {topic:'Software Dev Process', type:'multi', text:'Which of the following are among the 4 activities in Requirements Analysis? (Select all that apply)', options:['Eliciting Requirements','Analysing Requirements','Requirements Modelling','Review and Retrospective','Sprint Planning'], correct:[0,1,2,3], explain:'The 4 activities are Eliciting, Analysing, Modelling, and Review/Retrospective. Sprint Planning is an Agile/Scrum ceremony.'},
+{topic:'Software Dev Process', type:'single', text:'A key DISADVANTAGE of using questionnaires for requirement gathering is that:', options:['They cannot reach many respondents','There is no opportunity to probe deeper on an answer','They are the most widely used fact-finding technique','They always take longer than interviews'], correct:[1], explain:'Unlike interviews, questionnaires don\'t allow real-time follow-up/probing on an unclear or incomplete answer.'},
+{topic:'Software Dev Process', type:'single', text:'A key ADVANTAGE of interviewing users and stakeholders for requirement gathering is that:', options:['It is the cheapest and fastest technique for large groups','It allows the interviewer to probe and follow up in real time','It requires no scheduling','It removes all bias from the answers'], correct:[1], explain:'Interviews allow real-time follow-up questions and rapport-building, though they are time-consuming for large groups of stakeholders.'},
+{topic:'Software Dev Process', type:'single', text:'What is a notable risk (con) of reviewing existing documentation as a requirement-gathering technique?', options:['It always requires building a prototype first','The documentation may be outdated, incomplete, or miss undocumented/tacit knowledge','It disrupts the daily work of every stakeholder','It cannot be used alongside other techniques'], correct:[1], explain:'Existing documents may be outdated or incomplete, and won\'t capture tacit knowledge or unstated needs.'},
+{topic:'Software Dev Process', type:'multi', text:'Which are genuine ADVANTAGES of observing and documenting business processes directly? (Select all that apply)', options:['Captures what people actually do, not just what they say','Can reveal workflow steps or relationships interviews might miss','Is always faster than an interview','Removes any observer effect on behaviour'], correct:[0,1], explain:'Direct observation captures real behaviour and hidden workflow relationships. It is not necessarily faster than interviews, and it can suffer from the observer effect (people change behaviour when watched).'},
 
 // ---- AGILE ----
 {topic:'Agile', type:'single', text:'Agile Software Development is best described as:', options:['A rigid, sequential process','A lightweight framework promoting iterative development and close collaboration','A documentation-first methodology','A method used only for short, fixed-scope projects'], correct:[1], explain:'Agile is a lightweight framework promoting iterative development throughout the project lifecycle, with close collaboration between dev team and business.'},
